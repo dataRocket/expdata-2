@@ -1,0 +1,11 @@
+library(ggplot2)
+library(dplyr)
+library(plyr)
+NEI <- readRDS("exdata-data-NEI_data/summarySCC_PM25.rds")
+SCC <- readRDS("exdata-data-NEI_data/Source_Classification_Code.rds")
+baltimore<-filter(NEI,fips=="24510")
+baltimore_type<-ddply(baltimore,.(baltimore$type,baltimore$year),function(x){sum(x$Emissions)})
+colnames(baltimore_type)<-c("type","year","Emissions")
+
+qplot(year,Emissions,data=baltimore_type,color=type,geom="line")
+View(baltimore_type)
